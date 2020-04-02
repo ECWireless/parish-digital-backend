@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/ECWireless/parish-digital-backend/issues"
   },
-  "homepage": "https://github.com/ECWireless/parish-digital-backend#readme"
+  "homepage": "https://github.com/ECWireless/parish-digital-backend#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "mongoose": "^5.9.7"
+  }
 }
