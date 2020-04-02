@@ -1,0 +1,19 @@
+{
+  "name": "parish-digital-backend",
+  "version": "1.0.0",
+  "description": "The backend for the Parish Digital website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ECWireless/parish-digital-backend.git"
+  },
+  "author": "Elliott Conway",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ECWireless/parish-digital-backend/issues"
+  },
+  "homepage": "https://github.com/ECWireless/parish-digital-backend#readme"
+}
