@@ -10,6 +10,9 @@ const { buildSchema } = require('graphql');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// Models
+const User = require('./models/User');
+
 // Initialize Port and App
 let port = process.env.PORT;
 if (port == null || port == "") {
@@ -37,6 +40,7 @@ app.use('/graphql', graphqlHttp({
     schema: buildSchema(`
         type User {
             _id: ID!
+            username: String!
             password: String!
         }
         type AuthData {
@@ -45,11 +49,12 @@ app.use('/graphql', graphqlHttp({
             tokenExpiration: Int!
         }
         input UserInput {
+            username: String!
             password: String!
         }
 
         type RootQuery {
-            login(password: String!): AuthData!
+            login(username: String!, password: String!): AuthData!
         }
         type RootMutation {
             createUser(userInput: UserInput): User
@@ -61,24 +66,45 @@ app.use('/graphql', graphqlHttp({
         }
     `),
     rootValue: {
-        login: async({ password }) => {
-            if (password !== 'secret') {
-                throw new Error('Password is incorrect');
+        login: async ({ username, password }) => {
+            const user = await User.findOne({ username: username });
+            if(!user) {
+                throw new Error('User does not exist!');
             }
 
-            const token = jwt.sign({userId: 1371113, username: "ParishDigital"}, 'Elkey5819', {
+            const isEqual = await bcrypt.compare(password, user.password);
+            if (!isEqual) {
+                throw new Error('Password is incorrect!');
+            }
+
+            const token = jwt.sign({ userId: user.id, username: user.username }, 'Elkey5819', {
                 expiresIn: '1h'
-            });
-            
+            })
+
             return {
-                userId: "ParishDigital",
+                userId: user.id,
                 token: token,
                 tokenExpiration: 1
-            };
+            }
         },
-        createUser: (args) => {
-            const userInput = args.userInput;
-            return userInput;
+        createUser: async args => {
+            try {
+                const existingUser = await User.findOne({ username: args.userInput.username });
+                if (existingUser) {
+                    throw new Error('User already exists!')
+                }
+
+                const hashPassword = await bcrypt.hash(args.userInput.password, 12);
+                const user = new User({
+                    username: args.userInput.username,
+                    password: hashPassword
+                });
+
+                const result = await user.save();
+                return { ...result._doc };
+            } catch (err) {
+                throw err;
+            }
         }
     },
     graphiql: true,
@@ -86,4 +112,11 @@ app.use('/graphql', graphqlHttp({
 
 app.get('/', (req, res) => res.send('Parish Digital backend'));
 
-app.listen(port, () => console.log(`App listening on port ${port}`))
+mongoose.connect(`
+    mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@pd-backend-01-lasaf.gcp.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => {
+    app.listen(port, () => console.log(`App listening on port ${port}`))
+})
+.catch(err => {
+    console.log(err);
+})
