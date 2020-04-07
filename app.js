@@ -113,9 +113,9 @@ app.use('/graphql', graphqlHttp({
 app.get('/', (req, res) => res.send('Parish Digital backend'));
 
 mongoose.connect(`
-    mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@pd-backend-01-lasaf.gcp.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
+    mongodb+srv://Elliott:00j0reNKGrWYXDu2@pd-backend-01-lasaf.gcp.mongodb.net/pd-backend?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
-    app.listen(port, () => console.log(`App listening on port ${port}`))
+    app.listen(port, () => console.log(`App listening on port ${8000}`))
 })
 .catch(err => {
     console.log(err);
