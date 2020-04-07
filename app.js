@@ -110,7 +110,7 @@ const app = express();
 //     graphiql: true,
 // }));
 
-app.get('/', (req, res) => res.send('Test 3'));
+app.get('/', (req, res) => res.send('Test 4'));
 
 // mongoose.connect(`
 //     mongodb+srv://Elliott:00j0reNKGrWYXDu2@pd-backend-01-lasaf.gcp.mongodb.net/pd-backend?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
