@@ -115,9 +115,8 @@ app.get('/', (req, res) => res.send('Test 5'));
 mongoose.connect(`
     mongodb+srv://Elliott:00j0reNKGrWYXDu2@pd-backend-01-lasaf.gcp.mongodb.net/pd-backend?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
-    app.listen(port, () => console.log(`App listening on port ${8000}`))
+    app.listen(port, () => console.log(`App listening on port ${port}`))
 })
 .catch(err => {
     console.log(err);
 })
-app.listen(port, () => console.log(`App listening on port ${8000}`))
