@@ -1,5 +1,68 @@
+// Imports
 const express = require('express');
+const nodemailer = require('nodemailer');
+const router = express.Router();
 
+const transport = {
+    host: 'smtp.gmail.com',
+    port: 587,
+    auth: {
+        user: process.env.EMAIL_ADDRESS,
+        pass: process.env.EMAIL_PASSWORD
+    }
+}
+
+const transporter = nodemailer.createTransport(transport)
+
+transporter.verify((error, success) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Server is ready to take messages');
+  }
+});
+
+// QUOTE FORM
+router.post('/service', (req, res, next) => {
+    const name = req.body.name
+    const email = req.body.email
+    const message = req.body.message
+    const content = `Name: ${name}\nEmail: ${email}\nMessage: ${message} `
+
+    const mail = {
+        from: name,
+        to: 'Econway24@gmail.com',
+        subject: 'New Quote for Customer Success Stories',
+        text: content
+    }
+
+    transporter.sendMail(mail, (err, data) => {
+        if (err) {
+            res.json({
+                status: 'fail'
+            })
+        } else {
+            res.json({
+                status: 'success'
+            })
+
+            transporter.sendMail({
+                from: "Econway24@gmail.com",
+                to: email,
+                subject: "Submission was successful",
+                text: `Thank you for contacting us! We will reply with a quote shortly.\n\nFORM DETAILS:\nName: ${name}\nEmail: ${email}\nMessage: ${message}`
+            }, function(error, info){
+                if(error) {
+                    console.log(error);
+                } else{
+                    console.log('Message sent: ' + info.response);
+                }
+            });
+        }
+    })
+})
+
+// GRAPHQL
 const graphqlHttp = require('express-graphql');
 const mongoose = require('mongoose');
 // const bodyParser = require('body-parser');
@@ -114,7 +177,8 @@ app.use('/graphql', graphqlHttp({
     graphiql: true,
 }));
 
-app.get('/', (req, res) => res.send('Test 5'));
+app.use(express.json())
+app.use('/', router)
 
 mongoose.connect(`
     mongodb+srv://Elliott:00j0reNKGrWYXDu2@pd-backend-01-lasaf.gcp.mongodb.net/pd-backend?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })

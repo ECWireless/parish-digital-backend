@@ -1,7 +1,0 @@
-{
-    "env": {
-        "MONGO_USER": "Elliott",
-        "MONGO_PASSWORD": "00j0reNKGrWYXDu2",
-        "MONGO_DB": "pd-backend"
-    }
-}
