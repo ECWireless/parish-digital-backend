@@ -50,7 +50,13 @@ router.post('/service', (req, res, next) => {
                 from: "Econway24@gmail.com",
                 to: email,
                 subject: "Submission was successful",
-                text: `Thank you for contacting us! We will reply with a quote shortly.\n\nFORM DETAILS:\nName: ${name}\nEmail: ${email}\nMessage: ${message}`
+                text: `Thank you for contacting us! Your Customer Success Stories Pricing and Process details are attached to this email.\n\nWe will reply with a quote shortly.\n\nFORM DETAILS:\nName: ${name}\nEmail: ${email}\nMessage: ${message}`,
+                attachments: [
+                    {   // use URL as an attachment
+                        filename: 'Customer Success Stories Pricing and Process.pdf',
+                        path: 'https://drive.google.com/uc?export=download&id=1DD7TmtgpqFXKaqmYYH0-zWoShxePjsM5'
+                    }
+                ]
             }, function(error, info){
                 if(error) {
                     console.log(error);
