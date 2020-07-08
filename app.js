@@ -32,7 +32,7 @@ router.post('/service', (req, res, next) => {
     const mail = {
         from: name,
         to: 'Econway24@gmail.com',
-        subject: 'New Quote for Customer Success Stories',
+        subject: 'New Submission for Customer Success Stories',
         text: content
     }
 
