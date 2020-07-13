@@ -30,8 +30,9 @@ router.post('/service', (req, res, next) => {
     const content = `Name: ${name}\nEmail: ${email}\nMessage: ${message} `
 
     const mail = {
-        from: name,
-        to: 'Econway24@gmail.com',
+        from: 'Hello@parishdigital.com',
+        to: 'Hello@parishdigital.com',
+        cc: 'Alex@parishdigital.com',
         subject: 'New Submission for Customer Success Stories',
         text: content
     }
@@ -47,7 +48,7 @@ router.post('/service', (req, res, next) => {
             })
 
             transporter.sendMail({
-                from: "Econway24@gmail.com",
+                from: "Hello@parishdigital.com",
                 to: email,
                 subject: "Submission was successful",
                 text: `Thank you for contacting us! Your Customer Success Stories Pricing and Process details are attached to this email.\n\nWe will reply with a quote shortly.\n\nFORM DETAILS:\nName: ${name}\nEmail: ${email}\nMessage: ${message}`,
