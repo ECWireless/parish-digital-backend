@@ -55,7 +55,7 @@ router.post('/service', (req, res, next) => {
                 attachments: [
                     {   // use URL as an attachment
                         filename: 'Customer Success Stories Pricing and Process.pdf',
-                        path: 'https://drive.google.com/uc?export=download&id=1DD7TmtgpqFXKaqmYYH0-zWoShxePjsM5'
+                        path: 'https://drive.google.com/uc?export=download&id=16q00S5hSZrr0l-Ctl7w0DkkqAOwojQ1j'
                     }
                 ]
             }, function(error, info){
