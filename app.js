@@ -22,6 +22,47 @@ transporter.verify((error, success) => {
   }
 });
 
+// CONTACT FORM
+router.post('/contact', (req, res, next) => {
+    const name = req.body.name
+    const email = req.body.email
+    const message = req.body.message
+    const content = `Name: ${name}\nEmail: ${email}\nProject Description: ${message} `
+
+    const mail = {
+        from: 'Hello@parishdigital.com',
+        to: 'Hello@parishdigital.com',
+        cc: 'Alex@parishdigital.com',
+        subject: 'New Submission from Contact Form',
+        text: content
+    }
+
+    transporter.sendMail(mail, (err, data) => {
+        if (err) {
+            res.json({
+                status: 'fail'
+            })
+        } else {
+            res.json({
+                status: 'success'
+            })
+
+            transporter.sendMail({
+                from: "Hello@parishdigital.com",
+                to: email,
+                subject: "Submission was successful",
+                text: `Thank you for contacting us!\n\nWe will reply with a quote shortly.\n\nFORM DETAILS:\nName: ${name}\nEmail: ${email}\nMessage: ${message}`,
+            }, function(error, info){
+                if(error) {
+                    console.log(error);
+                } else{
+                    console.log('Message sent: ' + info.response);
+                }
+            });
+        }
+    })
+})
+
 // QUOTE FORM
 router.post('/service', (req, res, next) => {
     const name = req.body.name
